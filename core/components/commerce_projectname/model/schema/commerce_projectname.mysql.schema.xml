@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<model package="commerce_projectname" baseClass="comSimpleObject" platform="mysql" defaultEngine="MyISAM" version="1.1">
+    <!--<object class="ProjectnameOrderMessage" extends="comOrderMessage" />-->
+    <!--<object class="ProjectnameProduct" extends="comProduct" />-->
+    <!--<object class="ProjectnameShippingMethod" extends="comShippingMethod" />-->
+</model>

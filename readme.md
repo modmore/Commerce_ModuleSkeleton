@@ -4,8 +4,8 @@ Commerce Module Skeleton
 This repository contains a skeleton for a Commerce module project. It is meant to be installed with composer.
 
 ```` bash 
-mkdir my-project && cd my-project
-composer create-project modmore/moduleskeleton
+mkdir my-project
+composer create-project modmore/moduleskeleton my-project
 ````
 
 The skeleton will automatically rename the various bits and pieces with the name of the directory you install it in. This will apply a few transforms. 

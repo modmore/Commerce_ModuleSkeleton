@@ -1,13 +1,14 @@
 <?php
 /* Get the core config */
-if (!file_exists(dirname(dirname(__FILE__)).'/config.core.php')) {
-    die('ERROR: missing '.dirname(dirname(__FILE__)).'/config.core.php file defining the MODX core path.');
+$componentPath = dirname(__DIR__);
+if (!file_exists($componentPath.'/config.core.php')) {
+    die('ERROR: missing '.$componentPath.'/config.core.php file defining the MODX core path.');
 }
 
 echo "<pre>";
 /* Boot up MODX */
 echo "Loading modX...\n";
-require_once dirname(dirname(__FILE__)) . '/config.core.php';
+require_once $componentPath . '/config.core.php';
 require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx = new modX();
 echo "Initializing manager...\n";
@@ -15,7 +16,6 @@ $modx->initialize('mgr');
 $modx->getService('error','error.modError', '', '');
 $modx->setLogTarget('HTML');
 
-$componentPath = dirname(__DIR__);
 
 
 /* Namespace */

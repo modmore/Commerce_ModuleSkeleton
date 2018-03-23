@@ -39,6 +39,7 @@ foreach ($iterator as $file) {
     }
 }
 
+$root = dirname(__DIR__);
 rename($root . 'core/components/commerce_projectname/src/Modules/Projectname.php',
     $root . 'core/components/commerce_projectname/src/Modules/' . $casedProjectname . '.php');
 rename($root . 'core/components/commerce_projectname/model/schema/commerce_projectname.mysql.schema.xml',
@@ -50,6 +51,7 @@ echo "Removing dist files\n";
 
 // Then we drop the skel dir, as it contains skeleton stuff.
 delTree('skel');
+delTree('vendor');
 unlink('composer.json');
 unlink('readme.md');
 

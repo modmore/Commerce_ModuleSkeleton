@@ -53,6 +53,7 @@ echo "Removing dist files\n";
 delTree('skel');
 delTree('vendor');
 unlink('composer.json');
+unlink('composer.lock');
 unlink('readme.md');
 
 // We could also remove the composer.phar that the zend skeleton has here,

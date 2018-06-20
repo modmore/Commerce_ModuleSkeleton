@@ -39,7 +39,7 @@ foreach ($iterator as $file) {
     }
 }
 
-$root = dirname(__DIR__);
+$root = rtrim(dirname(__DIR__), '/') . '/';
 rename($root . 'core/components/commerce_projectname/src/Modules/Projectname.php',
     $root . 'core/components/commerce_projectname/src/Modules/' . $casedProjectname . '.php');
 rename($root . 'core/components/commerce_projectname/model/schema/commerce_projectname.mysql.schema.xml',

@@ -45,9 +45,9 @@ class Projectname extends BaseModule {
     {
         $fields = [];
 
-//        $fields[] = new DescriptionField($this->commerce, [
-//            'description' => $this->adapter->lexicon('commerce_projectname.module_description'),
-//        ]);
+        $fields[] = new DescriptionField($this->commerce, [
+            'description' => $this->adapter->lexicon('commerce_projectname.module_description'),
+        ]);
 
         return $fields;
     }

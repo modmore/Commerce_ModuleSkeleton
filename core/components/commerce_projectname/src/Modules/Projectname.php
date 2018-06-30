@@ -1,6 +1,7 @@
 <?php
 namespace ThirdParty\Projectname\Modules;
 use modmore\Commerce\Modules\BaseModule;
+use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';

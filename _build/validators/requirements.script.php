@@ -1,50 +1,111 @@
 <?php
 /** @var modX $modx */
-$modx =& $object->xpdo;
+$modx =& $transport->xpdo;
+
+if (!function_exists('checkVersion')) {
+    /**
+     * @param string $description
+     * @param string $current
+     * @param array $definition
+     * @param modX $modx
+     * @return bool
+     */
+    function checkVersion($description, $current, array $definition, $modx)
+    {
+        $pass = true;
+        $passGlyph = '✔';
+        $failGlyph = '×';
+        $warnGlyph = '⚠';
+
+        // Determine the minimum version (the one that we require today) and the recommended version (the version we'll
+        // start requiring in 9 months from now).
+        $realMinimum = false;
+        $recommended = false;
+        $recommendedDate = false;
+        foreach ($definition as $date => $minVersion) {
+            $date = strtotime($date);
+            if ($date <= time()) {
+                $realMinimum = $minVersion;
+            }
+            if ($date <= time() + (60 * 60 * 24 * 270)) {
+                $recommended = $minVersion;
+                $recommendedDate = $date;
+            }
+        }
+
+        if ($realMinimum) {
+            $level = xPDO::LOG_LEVEL_INFO;
+            $glyph = $passGlyph;
+            $checkMinimumVersion = $realMinimum;
+            if (substr_count($realMinimum, '.') < 2) {
+                $checkMinimumVersion .= '.0-dev';
+            }
+            if (version_compare($current, $checkMinimumVersion) <= 0) {
+                $level = xPDO::LOG_LEVEL_ERROR;
+                $pass = false;
+                $glyph = $failGlyph;
+            }
+            $modx->log($level, "- {$description} {$realMinimum}+ (minimum): {$glyph} {$current}");
+        }
+        if ($pass && $recommended) {
+            $level = xPDO::LOG_LEVEL_INFO;
+            $glyph = $passGlyph;
+            $checkRecommendedVersion = $recommended;
+            if (substr_count($realMinimum, '.') < 2) {
+                $checkRecommendedVersion .= '.0-dev';
+            }
+            if (version_compare($current, $checkRecommendedVersion) <= 0) {
+                $level = xPDO::LOG_LEVEL_WARN;
+                $glyph = $warnGlyph;
+            }
+            $recommendedDateFormatted = date('Y-m-d', $recommendedDate);
+            $modx->log($level, "- {$description} {$recommended}+ (minimum per {$recommendedDateFormatted}): {$glyph} {$current}");
+        }
+
+        return $pass;
+    }
+}
 $success = false;
 switch($options[xPDOTransport::PACKAGE_ACTION]) {
     case xPDOTransport::ACTION_INSTALL:
     case xPDOTransport::ACTION_UPGRADE:
         $success = true;
-        $modx->log(xPDO::LOG_LEVEL_INFO, 'Checking if server meets the minimum requirements...');
+        $modx->log(xPDO::LOG_LEVEL_INFO, 'Checking if the minimum requirements are met...');
 
-        // Check for MODX 2.5.2 or higher
-        $level = xPDO::LOG_LEVEL_INFO;
         $modxVersion = $modx->getVersionData();
-        if (version_compare($modxVersion['full_version'], '2.5.2') < 0) {
-            $level = xPDO::LOG_LEVEL_ERROR;
+        if (!checkVersion('MODX', $modxVersion['full_version'], [
+            '2017-04-22 12:00:00' => '2.5',
+            '2019-03-12 12:00:00' => '2.6',
+            '2019-11-27 12:00:00' => '2.7',
+        ], $modx)) {
             $success = false;
         }
-        $modx->log($level, '- MODX Revolution 2.5.2+: ' . $modxVersion['full_version']);
 
-        // Check for PHP 5.5 or higher
-        $level = xPDO::LOG_LEVEL_INFO;
-        if (version_compare(PHP_VERSION, '5.5.0') < 0) {
-            $level = xPDO::LOG_LEVEL_ERROR;
+        if (!checkVersion('PHP', PHP_VERSION, [
+            '2017-01-01 12:00:00' => '5.5',
+            '2019-07-01 12:00:00' => '7.1',
+            '2020-03-01 12:00:00' => '7.2',
+            '2020-11-30 12:00:00' => '7.3',
+        ], $modx)) {
             $success = false;
         }
-        $modx->log($level, '- PHP version 5.5+: ' . PHP_VERSION);
 
-        // Check for Commerce 0.11 +
+        // Check for Commerce 1.0+
         $corePath = $modx->getOption('commerce.core_path', null, $modx->getOption('core_path') . 'components/commerce/');
         $corePath .= 'model/commerce/';
-        $installed = true;
         $params = ['mode' => $modx->getOption('commerce.mode'), 'isSetup' => true];
         /** @var Commerce|null $commerce */
         $commerce = $modx->getService('commerce', 'Commerce', $corePath, $params);
-        if (!$commerce) {
-            $level = xPDO::LOG_LEVEL_ERROR;
-            $success = false;
-            $installed = false;
-        }
-        $modx->log($level, '- Commerce installed: ' . ($installed ? 'yes' : 'no'));
         if ($commerce instanceof Commerce) {
-            $installed = version_compare((string)$commerce->version, '0.11.0-rc1', '>=');
-            $level = $installed ? xPDO::LOG_LEVEL_INFO : xPDO::LOG_LEVEL_ERROR;
-            if (!$installed) {
+            if (!checkVersion('Commerce', (string)$commerce->version, [
+                '2019-01-01 12:00:00' => '1.1',
+            ], $modx)) {
                 $success = false;
             }
-            $modx->log($level, '- Commerce version 0.11+: ' . (string)$commerce->version);
+        }
+        else {
+            $modx->log( xPDO::LOG_LEVEL_ERROR, '- Commerce not installed.');
+            $success = false;
         }
 
 

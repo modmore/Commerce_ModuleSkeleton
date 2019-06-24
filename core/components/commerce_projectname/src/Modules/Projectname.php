@@ -2,9 +2,9 @@
 namespace ThirdParty\Projectname\Modules;
 use modmore\Commerce\Admin\Configuration\About\ComposerPackages;
 use modmore\Commerce\Admin\Sections\SimpleSection;
+use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use modmore\Commerce\Events\Admin\PageEvent;
 use modmore\Commerce\Modules\BaseModule;
-use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
 require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
@@ -37,12 +37,13 @@ class Projectname extends BaseModule {
 //        $path = $root . '/model/';
 //        $this->adapter->loadPackage('commerce_projectname', $path);
 
-        // Add template path to twig
+        // Add template path to twig - pre-1.1 way
 //        /** @var ChainLoader $loader */
 //        $root = dirname(dirname(__DIR__));
 //        $loader = $this->commerce->twig->getLoader();
 //        $loader->addLoader(new FilesystemLoader($root . '/templates/'));
-
+        // Add template path to twig - 1.1+ way
+//        $this->commerce->view()->addTemplatesPath($root . '/templates/');
 
         // Added in 0.12.0, to add composer libraries to the about section
         if (defined('\Commerce::EVENT_DASHBOARD_LOAD_ABOUT')) {

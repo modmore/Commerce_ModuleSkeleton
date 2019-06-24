@@ -27,7 +27,7 @@ if (!defined('MOREPROVIDER_BUILD')) {
     define('PKG_RELEASE', 'rc1');
 
     /* load modx */
-    require_once dirname(dirname(__FILE__)) . '/config.core.php';
+    require_once dirname(__DIR__) . '/config.core.php';
     require_once MODX_CORE_PATH . 'model/modx/modx.class.php';
     $modx= new modX();
     $modx->initialize('mgr');
@@ -37,14 +37,14 @@ if (!defined('MOREPROVIDER_BUILD')) {
 
     echo '<pre>';
     flush();
-    $targetDirectory = dirname(dirname(__FILE__)) . '/_packages/';
+    $targetDirectory = dirname(__DIR__) . '/_packages/';
 }
 else {
     $targetDirectory = MOREPROVIDER_BUILD_TARGET;
 }
 
-$root = dirname(dirname(__FILE__)).'/';
-$sources= array (
+$root = dirname(__DIR__).'/';
+$sources = [
     'root' => $root,
     'build' => $root .'_build/',
     'events' => $root . '_build/events/',
@@ -58,7 +58,7 @@ $sources= array (
     'lexicon' => $root . 'core/components/'.PKG_NAMESPACE.'/lexicon/',
     'docs' => $root.'core/components/'.PKG_NAMESPACE.'/docs/',
     'model' => $root.'core/components/'.PKG_NAMESPACE.'/model/',
-);
+];
 unset($root);
 
 $modx->loadClass('transport.modPackageBuilder','',false, true);
@@ -69,13 +69,38 @@ $builder->registerNamespace(PKG_NAMESPACE,false,true,'{core_path}components/'.PK
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in namespace.'); flush();
 
+$builder->package->put(
+    [
+        'source' => $sources['source_core'],
+        'target' => "return MODX_CORE_PATH . 'components/';",
+    ],
+    [
+        'vehicle_class' => 'xPDOFileVehicle',
+        'validate' => [
+            [
+                'type' => 'php',
+                'source' => $sources['validators'] . 'requirements.script.php'
+            ]
+        ]
+    ]
+);
+//$builder->package->put(
+//    [
+//        'source' => $sources['source_assets'],
+//        'target' => "return MODX_ASSETS_PATH . 'components/';",
+//    ],
+//    [
+//        'vehicle_class' => 'xPDOFileVehicle',
+//    ]
+//);
+
 /* Settings */
 $settings = include $sources['data'].'transport.settings.php';
-$attributes= array(
+$attributes= [
     xPDOTransport::UNIQUE_KEY => 'key',
     xPDOTransport::PRESERVE_KEYS => true,
     xPDOTransport::UPDATE_OBJECT => false,
-);
+];
 if (is_array($settings)) {
     foreach ($settings as $setting) {
         $vehicle = $builder->createVehicle($setting,$attributes);
@@ -85,30 +110,19 @@ if (is_array($settings)) {
     unset($settings,$setting,$attributes);
 }
 
-// Add the validator to check server requirements
-$vehicle->validate('php', array('source' => $sources['validators'] . 'requirements.script.php'));
-
-//$vehicle->resolve('file',array(
-//    'source' => $sources['source_assets'],
-//    'target' => "return MODX_ASSETS_PATH . 'components/';",
-//));
-$vehicle->resolve('file',array(
-    'source' => $sources['source_core'],
-    'target' => "return MODX_CORE_PATH . 'components/';",
-));
-$vehicle->resolve('php',array(
+$vehicle->resolve('php', [
     'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
-));
+]);
 $builder->putVehicle($vehicle);
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
 
 /* now pack in the license file, readme and setup options */
-$builder->setPackageAttributes(array(
+$builder->setPackageAttributes([
     'license' => file_get_contents($sources['docs'] . 'license.txt'),
     'readme' => file_get_contents($sources['docs'] . 'readme.txt'),
     'changelog' => file_get_contents($sources['docs'] . 'changelog.txt'),
-));
+]);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in package attributes.'); flush();
 
 $modx->log(modX::LOG_LEVEL_INFO,'Packing...'); flush();

@@ -56,9 +56,6 @@ unlink('composer.json');
 unlink('composer.lock');
 unlink('readme.md');
 
-// We could also remove the composer.phar that the zend skeleton has here,
-// but a much better choice is to remove that one from our fork directly.
-
 echo "Refreshing autoloader\n";
 
 exec('cd ' . $root . 'core/components/commerce_' . $projectname . '/ && composer dump-autoload', $out);

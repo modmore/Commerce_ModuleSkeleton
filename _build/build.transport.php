@@ -33,10 +33,6 @@ if (!defined('MOREPROVIDER_BUILD')) {
     $modx->initialize('mgr');
     $modx->setLogLevel(modX::LOG_LEVEL_INFO);
     $modx->setLogTarget('ECHO');
-
-
-    echo '<pre>';
-    flush();
     $targetDirectory = dirname(__DIR__) . '/_packages/';
 }
 else {
@@ -81,9 +77,22 @@ $builder->package->put(
                 'type' => 'php',
                 'source' => $sources['validators'] . 'requirements.script.php'
             ]
-        ]
+        ],
+        'resolve' => array(
+            array(
+                'type' => 'php',
+                'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
+            )
+        )
     ]
 );
+$modx->log(modX::LOG_LEVEL_INFO,'Packaged in core, requirements validator, and module loading resolver.'); flush();
+
+/**
+ * Assets
+ *
+ * If you have web-accessible assets in core/components/<package>/, then uncomment this section to package them too
+ */
 //$builder->package->put(
 //    [
 //        'source' => $sources['source_assets'],
@@ -93,29 +102,27 @@ $builder->package->put(
 //        'vehicle_class' => 'xPDOFileVehicle',
 //    ]
 //);
+//$modx->log(modX::LOG_LEVEL_INFO,'Packaged in assets.'); flush();
 
-/* Settings */
-$settings = include $sources['data'].'transport.settings.php';
-$attributes= [
-    xPDOTransport::UNIQUE_KEY => 'key',
-    xPDOTransport::PRESERVE_KEYS => true,
-    xPDOTransport::UPDATE_OBJECT => false,
-];
-if (is_array($settings)) {
-    foreach ($settings as $setting) {
-        $vehicle = $builder->createVehicle($setting,$attributes);
-        $builder->putVehicle($vehicle);
-    }
-    $modx->log(modX::LOG_LEVEL_INFO,'Packaged in '.count($settings).' system settings.'); flush();
-    unset($settings,$setting,$attributes);
-}
-
-$vehicle->resolve('php', [
-    'source' => $sources['resolvers'] . 'loadmodules.resolver.php',
-]);
-$builder->putVehicle($vehicle);
-
-$modx->log(modX::LOG_LEVEL_INFO,'Packaged in resolvers.'); flush();
+/**
+ * Settings
+ *
+ * If you have settings, uncomment this section to create them. See data/settings.php.
+ */
+//$settings = include $sources['data'] . 'transport.settings.php';
+//if (is_array($settings)) {
+//    $attributes = [
+//        xPDOTransport::UNIQUE_KEY => 'key',
+//        xPDOTransport::PRESERVE_KEYS => true,
+//        xPDOTransport::UPDATE_OBJECT => false,
+//    ];
+//    foreach ($settings as $setting) {
+//        $vehicle = $builder->createVehicle($setting,$attributes);
+//        $builder->putVehicle($vehicle);
+//    }
+//    $modx->log(modX::LOG_LEVEL_INFO,'Packaged in ' . count($settings) . ' system settings.'); flush();
+//    unset($settings,$setting,$attributes);
+//}
 
 /* now pack in the license file, readme and setup options */
 $builder->setPackageAttributes([
@@ -125,7 +132,7 @@ $builder->setPackageAttributes([
 ]);
 $modx->log(modX::LOG_LEVEL_INFO,'Packaged in package attributes.'); flush();
 
-$modx->log(modX::LOG_LEVEL_INFO,'Packing...'); flush();
+$modx->log(modX::LOG_LEVEL_INFO,'Zipping up the package...'); flush();
 $builder->pack();
 
 $mtime = microtime();
@@ -135,5 +142,5 @@ $tend = $mtime;
 $totalTime = ($tend - $tstart);
 $totalTime = sprintf("%2.4f s", $totalTime);
 
-$modx->log(modX::LOG_LEVEL_INFO,"\n<br />Package Built.<br />\nExecution time: {$totalTime}\n");
+$modx->log(modX::LOG_LEVEL_INFO,"\nPackage Built.\nExecution time: {$totalTime}\n");
 

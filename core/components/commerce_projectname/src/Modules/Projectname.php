@@ -45,10 +45,8 @@ class Projectname extends BaseModule {
         // Add template path to twig - 1.1+ way
 //        $this->commerce->view()->addTemplatesPath($root . '/templates/');
 
-        // Added in 0.12.0, to add composer libraries to the about section
-        if (defined('\Commerce::EVENT_DASHBOARD_LOAD_ABOUT')) {
-            $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_LOAD_ABOUT, [$this, 'addLibrariesToAbout']);
-        }
+        // Add composer libraries to the about section (v0.12+)
+        $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_LOAD_ABOUT, [$this, 'addLibrariesToAbout']);
     }
 
     public function getModuleConfiguration(\comModule $module)

@@ -1,11 +1,11 @@
 <?php
 /* @var modX $modx */
 
-if ($object->xpdo) {
+if ($transport->xpdo) {
     switch ($options[xPDOTransport::PACKAGE_ACTION]) {
         case xPDOTransport::ACTION_UPGRADE:
         case xPDOTransport::ACTION_INSTALL:
-            $modx =& $object->xpdo;
+            $modx =& $transport->xpdo;
 
             $modx->log(modX::LOG_LEVEL_INFO, 'Loading/updating available modules...');
 

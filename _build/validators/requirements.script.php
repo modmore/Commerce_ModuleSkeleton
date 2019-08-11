@@ -108,7 +108,7 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
 
 
         if ($success) {
-            $modx->log(xPDO::LOG_LEVEL_INFO, 'Requirements look good! Visit Extras > Commerce > Configuration > Commerce after installation to enable the module.');
+            $modx->log(xPDO::LOG_LEVEL_INFO, 'Requirements look good! Visit Extras > Commerce > Configuration > Modules after installation to enable the module.');
         }
         else {
             $modx->log(xPDO::LOG_LEVEL_ERROR, 'Unfortunately not all requirements have been met. Please correct the missing requirements, listed above, and run the install again.');

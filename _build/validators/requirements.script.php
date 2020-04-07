@@ -93,7 +93,7 @@ switch($options[xPDOTransport::PACKAGE_ACTION]) {
         $commerce = $modx->getService('commerce', 'Commerce', $corePath, $params);
         if ($commerce instanceof Commerce) {
             if (!checkVersion('Commerce', (string)$commerce->version, [
-                '2019-01-01 12:00:00' => '1.0',
+                '2019-01-01 12:00:00' => '1.1',
             ], $modx)) {
                 $success = false;
             }

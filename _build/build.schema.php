@@ -32,7 +32,7 @@ $generator->classTemplate= <<<EOD
 /**
  * Projectname for Commerce.
  *
- * Copyright 2019 by Your Name <your@email.com>
+ * Copyright 2020 by Your Name <your@email.com>
  *
  * This file is meant to be used with Commerce by modmore. A valid Commerce license is required.
  *
@@ -51,7 +51,7 @@ require_once strtr(realpath(dirname(dirname(__FILE__))), '\\\\', '/') . '/[+clas
 /**
  * Projectname for Commerce.
  *
- * Copyright 2019 by Your Name <your@email.com>
+ * Copyright 2020 by Your Name <your@email.com>
  *
  * This file is meant to be used with Commerce by modmore. A valid Commerce license is required.
  *
@@ -69,7 +69,7 @@ EOD;
 /**
  * Projectname for Commerce.
  *
- * Copyright 2019 by Your Name <your@email.com>
+ * Copyright 2020 by Your Name <your@email.com>
  *
  * This file is meant to be used with Commerce by modmore. A valid Commerce license is required.
  *

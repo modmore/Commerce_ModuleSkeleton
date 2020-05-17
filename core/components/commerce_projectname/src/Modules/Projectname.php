@@ -7,7 +7,7 @@ use modmore\Commerce\Events\Admin\PageEvent;
 use modmore\Commerce\Modules\BaseModule;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
-require_once dirname(dirname(__DIR__)) . '/vendor/autoload.php';
+require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
 class Projectname extends BaseModule {
 
@@ -33,13 +33,13 @@ class Projectname extends BaseModule {
         $this->adapter->loadLexicon('commerce_projectname:default');
 
         // Add the xPDO package, so Commerce can detect the derivative classes
-//        $root = dirname(dirname(__DIR__));
+//        $root = dirname(__DIR__, 2);
 //        $path = $root . '/model/';
 //        $this->adapter->loadPackage('commerce_projectname', $path);
 
         // Add template path to twig - pre-1.1 way
 //        /** @var ChainLoader $loader */
-//        $root = dirname(dirname(__DIR__));
+//        $root = dirname(__DIR__, 2);
 //        $loader = $this->commerce->twig->getLoader();
 //        $loader->addLoader(new FilesystemLoader($root . '/templates/'));
         // Add template path to twig - 1.1+ way
@@ -62,7 +62,7 @@ class Projectname extends BaseModule {
 
     public function addLibrariesToAbout(PageEvent $event)
     {
-        $lockFile = dirname(dirname(__DIR__)) . '/composer.lock';
+        $lockFile = dirname(__DIR__, 2) . '/composer.lock';
         if (file_exists($lockFile)) {
             $section = new SimpleSection($this->commerce);
             $section->addWidget(new ComposerPackages($this->commerce, [

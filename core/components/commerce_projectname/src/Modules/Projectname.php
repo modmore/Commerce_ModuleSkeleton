@@ -1,8 +1,8 @@
 <?php
 namespace ThirdParty\Projectname\Modules;
+
 use modmore\Commerce\Admin\Configuration\About\ComposerPackages;
 use modmore\Commerce\Admin\Sections\SimpleSection;
-use modmore\Commerce\Admin\Widgets\Form\DescriptionField;
 use modmore\Commerce\Events\Admin\PageEvent;
 use modmore\Commerce\Modules\BaseModule;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -37,12 +37,8 @@ class Projectname extends BaseModule {
 //        $path = $root . '/model/';
 //        $this->adapter->loadPackage('commerce_projectname', $path);
 
-        // Add template path to twig - pre-1.1 way
-//        /** @var ChainLoader $loader */
+        // Add template path to twig
 //        $root = dirname(__DIR__, 2);
-//        $loader = $this->commerce->twig->getLoader();
-//        $loader->addLoader(new FilesystemLoader($root . '/templates/'));
-        // Add template path to twig - 1.1+ way
 //        $this->commerce->view()->addTemplatesPath($root . '/templates/');
 
         // Add composer libraries to the about section (v0.12+)
@@ -53,9 +49,11 @@ class Projectname extends BaseModule {
     {
         $fields = [];
 
-        $fields[] = new DescriptionField($this->commerce, [
-            'description' => $this->adapter->lexicon('commerce_projectname.module_description'),
-        ]);
+        // A more detailed description to be shown in the module configuration. Note that the module description
+        // ({@see self:getDescription}) is automatically shown as well.
+//        $fields[] = new DescriptionField($this->commerce, [
+//            'description' => $this->adapter->lexicon('commerce_projectname.module_description'),
+//        ]);
 
         return $fields;
     }

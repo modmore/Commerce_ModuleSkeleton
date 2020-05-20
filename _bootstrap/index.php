@@ -68,7 +68,7 @@ if (!createObject('modSystemSetting', array(
 }
 
 
-$settings = include dirname(dirname(__FILE__)).'/_build/data/settings.php';
+$settings = include dirname(__DIR__) . '/_build/data/settings.php';
 foreach ($settings as $key => $opts) {
     $val = $opts['value'];
 

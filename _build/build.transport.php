@@ -21,7 +21,7 @@ set_time_limit(0);
 
 if (!defined('MOREPROVIDER_BUILD')) {
     /* define version */
-    define('PKG_NAME', 'Commerce_ProjectName');
+    define('PKG_NAME', 'Commerce_Projectname');
     define('PKG_NAMESPACE', 'commerce_projectname');
     define('PKG_VERSION', '1.0.0');
     define('PKG_RELEASE', 'rc1');

@@ -1,0 +1,5 @@
+.idea
+config.core.php
+.DS_store
+_packages/
+core/components/commerce_projectname/vendor/

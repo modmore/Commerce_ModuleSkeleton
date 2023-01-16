@@ -5,7 +5,7 @@ use modmore\Commerce\Admin\Configuration\About\ComposerPackages;
 use modmore\Commerce\Admin\Sections\SimpleSection;
 use modmore\Commerce\Events\Admin\PageEvent;
 use modmore\Commerce\Modules\BaseModule;
-use Symfony\Component\EventDispatcher\EventDispatcher;
+use modmore\Commerce\Dispatcher\EventDispatcher;
 
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 

@@ -105,7 +105,9 @@ include $componentPath . '/core/components/commerce_projectname/vendor/autoload.
 $modulePath = $componentPath . '/core/components/commerce_projectname/src/Modules/';
 
 // Instruct Commerce to load modules from our directory, providing the base namespace and module path twice
+$logLevel = $modx->setLogLevel(xPDO::LOG_LEVEL_INFO);
 $commerce->loadModulesFromDirectory($modulePath, 'ThirdParty\\Projectname\\Modules\\', $modulePath);
+$modx->setLogLevel($logLevel);
 
 // Clear the cache
 $modx->cacheManager->refresh();

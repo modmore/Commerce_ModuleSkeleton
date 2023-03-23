@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<ruleset name="Commerce Extension ruleset">
+    <description>Commerce Extension ruleset</description>
+
+    <arg name="extensions" value="php" />
+    <arg name="colors" />
+    <arg value="ps" />
+
+    <config name="installed_paths" value="vendor/phpcompatibility/php-compatibility" />
+    <config name="testVersion" value="8.0-"/>
+
+    <file>core/components/commerce_projectname/</file>
+
+    <!-- Exclude paths -->
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/model/mysql/*</exclude-pattern>
+
+    <!-- Our base rule: set to PSR12-->
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength.TooLong" />
+    </rule>
+
+    <!-- PHP compatibility checks -->
+    <rule ref="PHPCompatibility"/>
+
+    <rule ref="PSR1.Files.SideEffects.FoundWithSymbols">
+        <!-- Modules have side effects because they include an autoloader; that's fine -->
+        <exclude-pattern>core/components/commerce_projectname/src/Module.php</exclude-pattern>
+    </rule>
+
+    <rule ref="PSR1.Classes.ClassDeclaration.MissingNamespace">
+<!--        <exclude-pattern>file/with/no-namespace.php</exclude-pattern>-->
+    </rule>
+</ruleset>

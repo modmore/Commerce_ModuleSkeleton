@@ -1,6 +1,6 @@
 {
-  "name": "modmore/moduleskeleton",
-  "description": "Skeleton for Commerce module projects.",
+  "name": "yournamespace/projectname",
+  "description": "Projectname extension for Commerce.",
   "license": "MIT",
   "keywords": [
     "modx", "modmore", "modmore-commerce", "composer"
@@ -13,9 +13,6 @@
     "phpcompatibility/php-compatibility": "^9.3"
   },
   "scripts": {
-    "post-create-project-cmd": [
-      "@php skel/post_create_project.php"
-    ],
     "bootstrap": "php _bootstrap/index.php",
     "phpcs": "vendor/bin/phpcs --standard=phpcs.xml",
     "phpcbf": "vendor/bin/phpcbf --standard=phpcs.xml"

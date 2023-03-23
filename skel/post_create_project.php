@@ -13,45 +13,49 @@ $replaces = [
     'Projectname' => $casedProjectname,
 ];
 
-$dir_iterator = new RecursiveDirectoryIterator(dirname(__DIR__) . '/core');
-$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-/** @var SplFileInfo $file */
-foreach ($iterator as $file) {
-    if ($file->isFile()) {
-        applyValues($file, $replaces);
+$root = rtrim(dirname(__DIR__), '/') . '/';
+$replacePaths = [
+    $root . 'core',
+    $root . '_build',
+    $root . '_bootstrap',
+    $root . 'skel/composer.json',
+    $root . 'skel/readme.md',
+    $root . '.gitignore',
+];
+
+foreach ($replacePaths as $path) {
+    if (is_dir($path)) {
+        $dir_iterator = new RecursiveDirectoryIterator($path);
+        $iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
+        /** @var SplFileInfo $file */
+        foreach ($iterator as $file) {
+            if ($file->isFile()) {
+                applyValues($file, $replaces);
+            }
+        }
     }
-}
-$dir_iterator = new RecursiveDirectoryIterator(dirname(__DIR__) . '/_build');
-$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-/** @var SplFileInfo $file */
-foreach ($iterator as $file) {
-    if ($file->isFile()) {
-        applyValues($file, $replaces);
-    }
-}
-$dir_iterator = new RecursiveDirectoryIterator(dirname(__DIR__) . '/_bootstrap');
-$iterator = new RecursiveIteratorIterator($dir_iterator, RecursiveIteratorIterator::SELF_FIRST);
-/** @var SplFileInfo $file */
-foreach ($iterator as $file) {
-    if ($file->isFile()) {
-        applyValues($file, $replaces);
+    elseif (is_file($path)) {
+        applyValues($path, $replaces);
     }
 }
 
-$root = rtrim(dirname(__DIR__), '/') . '/';
+unlink('composer.json');
+unlink('composer.lock');
+unlink('readme.md');
+
 rename($root . 'core/components/commerce_projectname/model/schema/commerce_projectname.mysql.schema.xml',
     $root . 'core/components/commerce_projectname/model/schema/commerce_' . $projectname . '.mysql.schema.xml');
 rename($root . 'core/components/commerce_projectname',
     $root . 'core/components/commerce_' . $projectname);
+rename($root . 'skel/composer.json', $root . 'composer.json');
+rename($root . 'skel/readme.md', $root . 'readme.md');
+copy($root . 'config.core.sample.php', $root . 'config.core.php');
 
 echo "Removing dist files\n";
 
 // Then we drop the skel dir, as it contains skeleton stuff.
 delTree('skel');
 delTree('vendor');
-unlink('composer.json');
-unlink('composer.lock');
-unlink('readme.md');
 
 echo "Refreshing autoloader\n";
 
@@ -60,7 +64,13 @@ foreach ($out as $line) {
     echo $line . "\n";
 }
 
+exec('composer update', $out);
+foreach ($out as $line) {
+    echo $line . "\n";
+}
+
 echo "Done!\n";
+
 /**
  * A method that will read a file, run a strtr to replace placeholders with
  * values from our replace array and write it back to the file.

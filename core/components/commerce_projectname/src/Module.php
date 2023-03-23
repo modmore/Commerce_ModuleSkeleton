@@ -1,4 +1,5 @@
 <?php
+
 namespace ThirdParty\Projectname;
 
 use modmore\Commerce\Admin\Configuration\About\ComposerPackages;
@@ -9,8 +10,8 @@ use modmore\Commerce\Dispatcher\EventDispatcher;
 
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
-class Module extends BaseModule {
-
+class Module extends BaseModule
+{
     public function getName()
     {
         $this->adapter->loadLexicon('commerce_projectname:default');

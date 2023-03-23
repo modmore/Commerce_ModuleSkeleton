@@ -8,7 +8,7 @@ use modmore\Commerce\Events\Admin\PageEvent;
 use modmore\Commerce\Modules\BaseModule;
 use modmore\Commerce\Dispatcher\EventDispatcher;
 
-require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
+require_once dirname(__DIR__) . '/vendor/autoload.php';
 
 class Module extends BaseModule
 {

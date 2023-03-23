@@ -21,6 +21,8 @@ $replacePaths = [
     $root . 'skel/composer.json',
     $root . 'skel/readme.md',
     $root . '.gitignore',
+    $root . 'phpcs.xml',
+    $root . '.github/workflows/phpcs.xml',
 ];
 
 foreach ($replacePaths as $path) {

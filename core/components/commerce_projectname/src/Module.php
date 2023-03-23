@@ -1,5 +1,5 @@
 <?php
-namespace ThirdParty\Projectname\Modules;
+namespace ThirdParty\Projectname;
 
 use modmore\Commerce\Admin\Configuration\About\ComposerPackages;
 use modmore\Commerce\Admin\Sections\SimpleSection;
@@ -9,7 +9,7 @@ use modmore\Commerce\Dispatcher\EventDispatcher;
 
 require_once dirname(__DIR__, 2) . '/vendor/autoload.php';
 
-class Projectname extends BaseModule {
+class Module extends BaseModule {
 
     public function getName()
     {
@@ -33,15 +33,15 @@ class Projectname extends BaseModule {
         $this->adapter->loadLexicon('commerce_projectname:default');
 
         // Add the xPDO package, so Commerce can detect the derivative classes
-//        $root = dirname(__DIR__, 2);
+//        $root = dirname(__DIR__);
 //        $path = $root . '/model/';
 //        $this->adapter->loadPackage('commerce_projectname', $path);
 
         // Add template path to twig
-//        $root = dirname(__DIR__, 2);
+//        $root = dirname(__DIR__);
 //        $this->commerce->view()->addTemplatesPath($root . '/templates/');
 
-        // Add composer libraries to the about section (v0.12+)
+        // Add composer libraries to the about section
         $dispatcher->addListener(\Commerce::EVENT_DASHBOARD_LOAD_ABOUT, [$this, 'addLibrariesToAbout']);
     }
 

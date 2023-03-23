@@ -15,9 +15,9 @@ if ($transport->xpdo) {
                 // Grab the path to our namespaced files
                 $basePath = $modx->getOption('core_path') . 'components/commerce_projectname/';
                 include $basePath . 'vendor/autoload.php';
-                $modulePath = $basePath . 'src/Modules/';
+                $modulePath = $basePath . 'src/';
                 // Instruct Commerce to load modules from our directory, providing the base namespace and module path twice
-                $commerce->loadModulesFromDirectory($modulePath, 'ThirdParty\\Projectname\\Modules\\', $modulePath);
+                $commerce->loadModulesFromDirectory($modulePath, 'ThirdParty\\Projectname\\', $modulePath);
                 $modx->log(modX::LOG_LEVEL_INFO, 'Synchronised modules.');
             }
             else {

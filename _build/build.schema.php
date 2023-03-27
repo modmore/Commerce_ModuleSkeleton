@@ -9,7 +9,7 @@ set_time_limit(0);
 define('PKG_NAME', 'Commerce_Projectname');
 define('PKG_NAME_LOWER', strtolower(PKG_NAME));
 
-require_once dirname(dirname(__FILE__)) . '/config.core.php';
+require_once dirname(__DIR__) . '/config.core.php';
 include_once MODX_CORE_PATH . 'model/modx/modx.class.php';
 $modx= new modX();
 $modx->initialize('mgr');
@@ -17,7 +17,7 @@ $modx->loadClass('transport.modPackageBuilder','',false, true);
 $modx->setLogLevel(modX::LOG_LEVEL_INFO);
 $modx->setLogTarget(XPDO_CLI_MODE ? 'ECHO' : 'HTML');
 
-$root = dirname(dirname(__FILE__)).'/';
+$root = dirname(__DIR__) . '/';
 $sources = array(
     'root' => $root,
     'core' => $root.'core/components/commerce_projectname/',

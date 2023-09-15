@@ -25,5 +25,8 @@ jobs:
       - name: Install dependencies
         run: cd core/components/commerce_projectname && composer install --no-progress --prefer-dist --optimize-autoloader
 
+      - name: Install phpcs
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
       - name: Run phpcs
         run: composer run phpcs -- --runtime-set testVersion ${{ matrix.php-version }}

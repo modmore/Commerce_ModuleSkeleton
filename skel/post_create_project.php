@@ -22,7 +22,7 @@ $replacePaths = [
     $root . 'skel/readme.md',
     $root . '.gitignore',
     $root . 'phpcs.xml',
-    $root . '.github/workflows/phpcs.xml',
+    $root . '.github/workflows/phpcs.yml',
 ];
 
 foreach ($replacePaths as $path) {
